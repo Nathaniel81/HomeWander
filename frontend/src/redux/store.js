@@ -1,16 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./state";
+
 import {
-  persistStore,
-  persistReducer,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
+  persistReducer,
+  persistStore,
   PURGE,
   REGISTER,
+  REHYDRATE,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import state from "./state";
 
 const persistConfig = {
   key: "root",
@@ -18,10 +19,10 @@ const persistConfig = {
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, state);
+const persistedReducer = persistReducer(persistConfig, userReducer);
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: { user: persistedReducer },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -30,4 +31,4 @@ export const store = configureStore({
     }),
 });
 
-export let persistor = persistStore(store);
+export const persistor = persistStore(store);

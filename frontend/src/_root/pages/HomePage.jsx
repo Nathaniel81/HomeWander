@@ -5,8 +5,6 @@ import Listings from "../../components/Listings"
 import Footer from "../../components/Footer"
 
 
-
-
 const HomePage = () => {
   return (
     <>

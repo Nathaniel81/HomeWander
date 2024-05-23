@@ -4,10 +4,21 @@ const initialState = {
 	userInfo: null,
 }
 
-export const appSlice = createSlice({
-  name: "app",
+export const userSlice = createSlice({
+  name: "user",
   initialState,
-  reducers: {}
+  reducers: {
+    addUser: (state, action) => {
+      state.userInfo = action.payload;
+    },
+    resetUser: (state) => {
+      state.userInfo = null;
+    }
+  }
 })
 
-export default appSlice.reducer
+export const {
+  addUser,
+  resetUser,
+} = userSlice.actions;
+export default userSlice.reducer
