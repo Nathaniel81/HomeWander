@@ -4,6 +4,7 @@ import "../styles/Register.scss"
 import { toast } from "react-toastify";
 import { addUser } from "../redux/state";
 import { useDispatch, useSelector } from "react-redux";
+import { LuLoader2 } from "react-icons/lu";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -15,8 +16,7 @@ const RegisterPage = () => {
     profile_picture: null,
   });
 
-  const { userInfo } = useSelector((state) => state.user);
-  console.log(userInfo, !userInfo)
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -36,12 +36,19 @@ const RegisterPage = () => {
 	//eslint-disable-next-line
   }, []);
 
+  const { userInfo } = useSelector((state) => state.user);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(userInfo) navigate('/');
+  }, [userInfo, navigate]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
   
     try {
+      setLoading(true);
       const register_form = new FormData();
   
       for (const key in formData) {
@@ -62,14 +69,15 @@ const RegisterPage = () => {
         const errorData = await response.json();
         if (response.status === 409) {
           toast.error(errorData.error);
-      } else {
+        } else {
           toast.error("An error occurred. Please try again later.");
-      }
+        }
       }
     } catch (err) {
       console.error("Registration failed", err.message);
       toast.error("Registration failed");
     }
+    setLoading(false);
   };
   
 
@@ -141,7 +149,14 @@ const RegisterPage = () => {
               style={{ maxWidth: "80px" }}
             />
           )}
-          <button type="submit" disabled={!passwordMatch}>REGISTER</button>
+          <button 
+            type="submit" 
+            disabled={!passwordMatch || loading}>
+              {loading ? (
+                <LuLoader2 className="spin" />
+              ):
+              "Register"}
+          </button>
         </form>
         <Link to={"/sign-in"}>Already have an account? Log In Here</Link>
       </div>

@@ -1,14 +1,14 @@
 @import "./variables.scss";
 @import "./breakpoints.scss";
 
-.register {
+.login {
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background: url("../../assets/register.jpg") center;
+  background: url("../../assets/login.jpg") center;
   background-size: cover;
 
   &_content {
@@ -53,21 +53,6 @@
         }
       }
 
-      label {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 9px;
-        cursor: pointer;
-        color: white;
-        font-size: 14px;
-
-        img {
-          width: 25px;
-        }
-      }
-
       button {
         margin-top: 15px;
 
@@ -77,33 +62,35 @@
         &:hover {
           box-shadow: 0 0 10px 3px rgba(255, 255, 255);
         }
-
-        .spin {
-          animation: spin 0.5s linear infinite;
-        }
-        
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-        
+		.spin {
+			animation: spin 0.5s linear infinite;
+		}
       }
+    }
+
+    &_google {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
     }
 
     a {
       text-decoration: none;
       color: white;
-      font-size: 13px;
-      margin-top: 10px;
+      font-size: 17px;
+      font-weight: 600;
       text-align: center;
 
       &:hover {
         text-decoration: underline;
       }
+    }
+
+    p {
+      color: white;
+      font-size: 13px;
+      text-align: center;
     }
   }
 }
