@@ -86,7 +86,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'natestate.wsgi.application'
+AUTH_USER_MODEL = 'accounts.User'
 
+# Cloudinary - Django Integration
+cloudinary.config(
+    cloud_name=os.getenv('CLOUDINARY_NAME'),
+    api_key=os.getenv('CLOUDINARY_API_KEY'),
+    api_secret=os.getenv('CLOUDINARY_API_SECRET_KEY'),
+)
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_NAME'),
@@ -187,7 +194,7 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend', 'dist')
+    os.path.join(BASE_DIR, 'static')
 ]
 
 MEDIA_URL = '/media/'
