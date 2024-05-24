@@ -12,7 +12,7 @@ import '../styles/variables.scss';
 const Navbar = () => {
   const [dropdownMenu, setDropdownMenu] = useState(false);
 
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user.userInfo);
 
   const dispatch = useDispatch();
 
@@ -45,12 +45,18 @@ const Navbar = () => {
 
   const pinkred = getCssVariable('--pinkred');
   const darkgrey = getCssVariable('--darkgrey');
+
+  const handleSearch = () => {
+    if (search !== '') {
+      navigate(`/properties/search/${search}`);
+    }
+  }
   
   return (
     <div className="navbar">
-      <a href="/">
+      <Link to="/">
         <img src="/assets/logo.png" alt="logo" />
-      </a>
+      </Link>
 
       <div className="navbar_search">
         <input
@@ -62,20 +68,20 @@ const Navbar = () => {
         <IconButton disabled={search === ""}>
           <Search
             sx={{ color: pinkred }}
-            onClick={() => {navigate(`/properties/search/${search}`)}}
+            onClick={handleSearch}
           />
         </IconButton>
       </div>
 
       <div className="navbar_right">
         {user ? (
-          <a href="/create-listing" className="host">
+          <Link to="/create-listing" className="host">
             Become A Host
-          </a>
+          </Link>
         ) : (
-          <a href="/login" className="host">
+          <Link to="/sign-in" className="host">
             Become A Host
-          </a>
+          </Link>
         )}
 
         <button
@@ -96,7 +102,7 @@ const Navbar = () => {
 
         {dropdownMenu && !user && (
           <div className="navbar_right_accountmenu">
-            <Link to="/login">Log In</Link>
+            <Link to="/sign-in">Log In</Link>
             <Link to="/register">Sign Up</Link>
           </div>
         )}

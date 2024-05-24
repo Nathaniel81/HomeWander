@@ -30,6 +30,7 @@ const SignInPage = () => {
 
       /* Get data after fetching */
       const loggedIn = await response.json();
+      console.log(loggedIn)
 
       if (loggedIn) {
         dispatch (addUser(loggedIn));
