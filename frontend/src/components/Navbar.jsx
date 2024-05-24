@@ -1,12 +1,12 @@
+import { Menu, Person, Search } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import { Search, Person, Menu } from "@mui/icons-material";
-import variables from "../styles/variables.scss";
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import "../styles/Navbar.scss"
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { resetUser } from "../redux/state";
 import { toast } from "react-toastify";
+import { resetUser } from "../redux/state";
+import "../styles/Navbar.scss";
+import '../styles/variables.scss';
 
 
 const Navbar = () => {
@@ -38,6 +38,13 @@ const Navbar = () => {
     }
     dispatch(resetUser());
   };
+
+  const getCssVariable = (variable) => {
+    return getComputedStyle(document.documentElement).getPropertyValue(variable);
+  };
+
+  const pinkred = getCssVariable('--pinkred');
+  const darkgrey = getCssVariable('--darkgrey');
   
   return (
     <div className="navbar">
@@ -54,7 +61,7 @@ const Navbar = () => {
         />
         <IconButton disabled={search === ""}>
           <Search
-            sx={{ color: variables.pinkred }}
+            sx={{ color: pinkred }}
             onClick={() => {navigate(`/properties/search/${search}`)}}
           />
         </IconButton>
@@ -75,9 +82,9 @@ const Navbar = () => {
           className="navbar_right_account"
           onClick={() => setDropdownMenu(!dropdownMenu)}
         >
-          <Menu sx={{ color: variables.darkgrey }} />
+          <Menu sx={{ color: darkgrey }} />
           {!user ? (
-            <Person sx={{ color: variables.darkgrey }} />
+            <Person sx={{ color: darkgrey }} />
           ) : (
             <img
               src={user?.profile_picture}
