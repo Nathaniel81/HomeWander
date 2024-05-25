@@ -12,7 +12,7 @@ import '../styles/variables.scss';
 const Navbar = () => {
   const [dropdownMenu, setDropdownMenu] = useState(false);
 
-  const user = useSelector((state) => state.user.userInfo);
+  const user = useSelector((state) => state.app.userInfo);
 
   const dispatch = useDispatch();
 
@@ -116,7 +116,7 @@ const Navbar = () => {
             <Link to="/create-listing">Become A Host</Link>
 
             <Link
-              to="/login"
+              to="/sign-in"
               onClick={() => handleSignOut()}
             >
               Log Out

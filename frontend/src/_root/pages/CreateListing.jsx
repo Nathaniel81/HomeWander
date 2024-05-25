@@ -9,6 +9,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { BiTrash } from "react-icons/bi";
 import { IoIosImages } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Footer from "../../components/Footer";
 
 const CreateListing = () => {
@@ -139,9 +140,11 @@ const CreateListing = () => {
       });
 
       if (response.ok) {
+        toast.success('Listing Created')
         navigate("/");
       }
     } catch (err) {
+      toast.error('Publish Listing failed')
       console.log("Publish Listing failed", err.message);
     }
     setLoading(false);

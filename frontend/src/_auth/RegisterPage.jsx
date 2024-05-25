@@ -36,7 +36,7 @@ const RegisterPage = () => {
 	//eslint-disable-next-line
   }, []);
 
-  const { userInfo } = useSelector((state) => state.user);
+  const userInfo = useSelector((state) => state.app.userInfo);
   const navigate = useNavigate();
 
   useEffect(() => {
