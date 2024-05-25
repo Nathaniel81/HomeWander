@@ -11,6 +11,8 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt import tokens
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.exceptions import ValidationError
+from core.serializers import ListingSerializer
+from core.models import Listing
 
 from core.authenticate import CustomAuthentication
 
@@ -158,3 +160,40 @@ class LogoutView(APIView):
             return response
         except Exception as e:
             raise exceptions.ParseError("Invalid token")
+
+class UserWishListView(generics.GenericAPIView):
+    """
+    API endpoint for retrieving and managing a user's wish list.
+    """
+
+    authentication_classes = [CustomAuthentication]
+    serializer_class = ListingSerializer
+
+    def get(self, request, *args, **kwargs):
+        wish_list = request.user.wish_list.all()
+        serializer = self.get_serializer(wish_list, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, *args, **kwargs):
+        listing_id = request.data.get('listing_id')
+        if not listing_id:
+            return Response({'error': 'Listing ID is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            listing = Listing.objects.get(id=listing_id)
+        except Listing.DoesNotExist:
+            return Response({'error': 'Listing not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        if listing in request.user.wish_list.all():
+            request.user.wish_list.remove(listing)
+            action = 'removed from'
+        else:
+            request.user.wish_list.add(listing)
+            action = 'added to'
+
+        serializer = self.get_serializer(request.user.wish_list, many=True)
+
+        return Response({
+            'message': f'Listing {action} wish list',
+            'wish_list': serializer.data
+        }, status=status.HTTP_200_OK)
