@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import BaseUserManager
+# from core.models import Listing
+from django.apps import apps
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -30,6 +32,9 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=100, null=True, blank=True)
     profile_picture = CloudinaryField('image', null=True, blank=True)
     email = models.EmailField(unique=True)
+    trip_list = models.ManyToManyField('core.Listing', related_name='trip_users', blank=True)
+    wish_list = models.ManyToManyField('core.Listing', related_name='wish_users', blank=True)
+    reservation_list = models.ManyToManyField('core.Listing', related_name='reservation_users', blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
