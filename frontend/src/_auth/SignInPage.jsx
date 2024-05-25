@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 const SignInPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { userInfo } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.app.userInfo);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -45,8 +45,8 @@ const SignInPage = () => {
   }
 
   useEffect(() => {
-    if (userInfo) navigate('/');
-  }, [navigate, userInfo]);
+    if (user) navigate('/');
+  }, [navigate, user]);
 
   return (
     <div className="login">

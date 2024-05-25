@@ -33,8 +33,7 @@ const RegisterPage = () => {
 
   useEffect(() => {
     setPasswordMatch(formData.password === formData.confirmPassword || formData.confirmPassword === "");
-	//eslint-disable-next-line
-  }, []);
+  }, [formData.confirmPassword, formData.password]);
 
   const userInfo = useSelector((state) => state.app.userInfo);
   const navigate = useNavigate();
@@ -70,6 +69,7 @@ const RegisterPage = () => {
         if (response.status === 409) {
           toast.error(errorData.error);
         } else {
+          console.log(errorData)
           toast.error("An error occurred. Please try again later.");
         }
       }
@@ -125,7 +125,7 @@ const RegisterPage = () => {
           />
 
           {!passwordMatch && (
-            <p style={{ color: "red" }}>Passwords are not matched!</p>
+            <p style={{ color: "red" }}>Passwords do not match!</p>
           )}
 
           <input

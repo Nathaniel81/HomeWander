@@ -8,12 +8,21 @@ from rest_framework.response import Response
 
 from .models import Listing
 from .serializers import ListingSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class ListingViewSet(viewsets.ModelViewSet):
     queryset = Listing.objects.all()
     serializer_class = ListingSerializer
     authentication_classes = [CustomAuthentication]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category']
+
+    # def get_queryset(self):
+    #     category = self.request.query_params.get('category', '')
+    #     if category:
+    #         listings = Listing.objects.filter(category=category)
+    #     return category
 
     def create(self, request, *args, **kwargs):
         # print(request.data)

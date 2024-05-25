@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { categories } from "../constants/data";
 import "../styles/Listings.scss";
-// import ListingCard from "./ListingCard";
 import ListingCard from "./ListingCard";
 
 import Loader from "./Loader";
