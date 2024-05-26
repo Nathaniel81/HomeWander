@@ -2,13 +2,13 @@ import json
 
 import cloudinary.uploader
 from core.authenticate import CustomAuthentication
-from rest_framework import status, viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status, viewsets, generics
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 
-from .models import Listing
-from .serializers import ListingSerializer
-from django_filters.rest_framework import DjangoFilterBackend
+from .models import Booking, Listing
+from .serializers import BookingSerializer, ListingSerializer
 
 
 class ListingViewSet(viewsets.ModelViewSet):
@@ -17,12 +17,6 @@ class ListingViewSet(viewsets.ModelViewSet):
     authentication_classes = [CustomAuthentication]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['category']
-
-    # def get_queryset(self):
-    #     category = self.request.query_params.get('category', '')
-    #     if category:
-    #         listings = Listing.objects.filter(category=category)
-    #     return category
 
     def create(self, request, *args, **kwargs):
         # print(request.data)
@@ -50,4 +44,43 @@ class ListingViewSet(viewsets.ModelViewSet):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             print(e)
-            return Response({'error': 'An error occurred during listing creation.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                'error': 'An error occurred during listing creation.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+class BookingViewSet(viewsets.ModelViewSet):
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
+    authentication_classes = [CustomAuthentication]
+
+    def list(self, request):
+        try:
+            user = request.user
+            if user.is_authenticated:
+                bookings = Booking.objects.filter(customer=user).select_related('customer', 'host', 'listing')
+                serializer = self.get_serializer(bookings, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as e:
+            print(e)
+            return Response({
+                'error': 'An error occurred while retrieving bookings'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    def create(self, request):
+        try:
+           user = request.user
+           data = request.data.copy()
+           data['customer'] = user.id
+           serializer = self.get_serializer(data=data)
+           serializer.is_valid(raise_exception=True)
+           user.trip_list.set(data['listing'])
+           user.save()
+           serializer.save()
+           return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            print(e)
+            return Response({
+                'error': 'An error occured during booking creation'
+            }, status=status.HTTP_400_BAD_REQUEST)

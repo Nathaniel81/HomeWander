@@ -12,8 +12,7 @@ from rest_framework_simplejwt import tokens
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.exceptions import ValidationError
 from core.serializers import ListingSerializer
-from core.models import Listing
-
+from core.models import Listing, Booking
 from core.authenticate import CustomAuthentication
 
 from .models import User

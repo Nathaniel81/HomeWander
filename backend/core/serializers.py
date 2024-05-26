@@ -1,8 +1,10 @@
 from rest_framework import serializers
-from .models import Listing
+from .models import Listing, Booking
+from accounts.serializers import UserSerializer
 
 
 class ListingSerializer(serializers.ModelSerializer):
+    creator = UserSerializer(read_only=True)
     class Meta:
         model = Listing
         fields = '__all__'
@@ -13,3 +15,9 @@ class ListingSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("At least one photo is required for creating a listing.")
         
         return data
+
+class BookingSerializer(serializers.ModelSerializer):
+    listing = ListingSerializer(read_only=True)
+    class Meta:
+        model = Booking
+        fields = '__all__'
