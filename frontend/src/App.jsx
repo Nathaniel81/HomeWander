@@ -8,7 +8,8 @@ import {
   TripList, 
   WishList, 
   PropertyList,
-  ReservationList
+  ReservationList,
+  CategoryPage
 } from './_root/pages';
 import { SignInPage, RegisterPage } from './_auth';
 import { ToastContainer } from 'react-toastify';
@@ -27,6 +28,7 @@ function App() {
           <Route path="/sign-in" element={<SignInPage  />} />
           <Route path="/create-listing" element={<CreateListing />} />
           <Route path="/properties/:listingId" element={<ListingDetail />} />
+          <Route path="/properties/category/:category" element={<CategoryPage />} />
           <Route path="/:userId/trips" element={<TripList />} />
           <Route path="/:userId/wishList" element={<WishList />} />
           <Route path="/:userId/properties" element={<PropertyList />} />
