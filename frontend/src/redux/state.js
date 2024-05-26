@@ -21,6 +21,9 @@ export const appSlice = createSlice({
     setWishList: (state, action) => {
       state.userInfo.wishList = action.payload
     },
+    setTripList: (state, action) => {
+      state.userInfo.tripList = action.payload
+    },
   }
 })
 
@@ -28,6 +31,7 @@ export const {
   addUser,
   resetUser,
   setListings,
-  setWishList
+  setWishList,
+  setTripList
 } = appSlice.actions;
 export default appSlice.reducer
