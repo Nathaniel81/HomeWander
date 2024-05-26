@@ -9,7 +9,8 @@ import {
   WishList, 
   PropertyList,
   ReservationList,
-  CategoryPage
+  CategoryPage,
+  SearchPage
 } from './_root/pages';
 import { SignInPage, RegisterPage } from './_auth';
 import { ToastContainer } from 'react-toastify';
@@ -29,6 +30,7 @@ function App() {
           <Route path="/create-listing" element={<CreateListing />} />
           <Route path="/properties/:listingId" element={<ListingDetail />} />
           <Route path="/properties/category/:category" element={<CategoryPage />} />
+          <Route path="/properties/search/:search" element={<SearchPage />} />
           <Route path="/:userId/trips" element={<TripList />} />
           <Route path="/:userId/wishList" element={<WishList />} />
           <Route path="/:userId/properties" element={<PropertyList />} />

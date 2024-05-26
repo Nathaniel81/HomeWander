@@ -2,10 +2,13 @@ import json
 
 import cloudinary.uploader
 from core.authenticate import CustomAuthentication
+from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status, viewsets, generics
+from rest_framework import generics, status, viewsets
 from rest_framework.exceptions import ParseError
+from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Booking, Listing
 from .serializers import BookingSerializer, ListingSerializer
@@ -47,6 +50,28 @@ class ListingViewSet(viewsets.ModelViewSet):
             return Response({
                 'error': 'An error occurred during listing creation.'
             }, status=status.HTTP_400_BAD_REQUEST)
+
+class ListingSearchView(APIView):
+
+    def get(self, request, search=None):
+        try:
+            if search is None or search.lower() == "all":
+                listings = Listing.objects.select_related('creator').all()
+            else:
+                print(f"Search term: {search}")  # Debugging
+                listings = Listing.objects.filter(
+                    Q(category__icontains=search) | Q(title__icontains=search)
+                ).select_related('creator')
+                print(f"Filtered listings: {listings}")  # Debugging
+            
+            serializer = ListingSerializer(listings, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({
+                'error': 'An error occurred while searching for listings'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
 
 class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()

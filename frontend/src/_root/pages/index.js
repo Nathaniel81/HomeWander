@@ -6,3 +6,4 @@ export { default as WishList } from "./WishList";
 export { default as PropertyList } from "./PropertyList";
 export { default as ReservationList } from "./ReservationList";
 export { default as CategoryPage } from "./CategoryPage";
+export { default as SearchPage } from "./SearchPage";

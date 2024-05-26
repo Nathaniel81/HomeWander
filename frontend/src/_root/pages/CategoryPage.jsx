@@ -47,16 +47,16 @@ const CategoryPage = () => {
         <div className="listings">
             {listings?.map(
             ({
-                id,
-                creator,
-                listing_photo_paths,
-                city,
-                province,
-                country,
-                category,
-                type,
-                price,
-                booking=false
+              id,
+              creator,
+              listing_photo_paths,
+              city,
+              province,
+              country,
+              category,
+              type,
+              price,
+              booking=false
             }) => (
                 <ListingCard
                 key={id}
