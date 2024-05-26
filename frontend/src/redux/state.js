@@ -24,6 +24,21 @@ export const appSlice = createSlice({
     setTripList: (state, action) => {
       state.userInfo.tripList = action.payload
     },
+    setPropertyList: (state, action) => {
+      state.userInfo.propertyList = action.payload
+    },
+    resetPropertyList: (state) => {
+      state.userInfo.propertyList = null
+    },
+    resetWishList: (state) => {
+      state.userInfo.wishList = null;
+    },
+    resetTripList: (state) => {
+      state.userInfo.tripList = null;
+    },
+    setReservationList: (state, action) => {
+      state.userInfo.reservationList = action.payload
+    }
   }
 })
 
@@ -32,6 +47,11 @@ export const {
   resetUser,
   setListings,
   setWishList,
-  setTripList
+  setTripList,
+  setPropertyList,
+  setReservationList,
+  resetPropertyList,
+  resetTripList,
+  resetWishList
 } = appSlice.actions;
 export default appSlice.reducer

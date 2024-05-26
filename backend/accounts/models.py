@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import BaseUserManager
-# from core.models import Listing
 from django.apps import apps
 
 class CustomUserManager(BaseUserManager):

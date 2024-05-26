@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { resetUser } from "../redux/state";
+import { resetUser, resetTripList, resetWishList } from "../redux/state";
 import "../styles/Navbar.scss";
 import '../styles/variables.scss';
 
@@ -37,6 +37,8 @@ const Navbar = () => {
       toast.error('Network response was not ok');
     }
     dispatch(resetUser());
+    dispatch(resetWishList());
+    dispatch(resetTripList());
   };
 
   const getCssVariable = (variable) => {

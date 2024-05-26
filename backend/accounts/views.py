@@ -171,7 +171,7 @@ class UserWishListView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         wish_list = request.user.wish_list.all()
         serializer = self.get_serializer(wish_list, many=True)
-        return Response(serializer.data)
+        return Response({'wish_list': serializer.data}, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         listing_id = request.data.get('listing_id')
@@ -196,3 +196,30 @@ class UserWishListView(generics.GenericAPIView):
             'message': f'Listing {action} wish list',
             'wish_list': serializer.data
         }, status=status.HTTP_200_OK)
+
+class UserPropertyListView(generics.ListAPIView):
+    authentication_classes = [CustomAuthentication]
+    serializer_class = ListingSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        listings = Listing.objects.filter(creator=user)
+        return listings
+
+class UserReservationListView(generics.ListAPIView):
+    authentication_classes = [CustomAuthentication]
+    serializer_class = ListingSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            try:
+                bookings = Booking.objects.filter(host=user).select_related('customer', 'host', 'listing')
+                return bookings
+            except Exception as e:
+                print(e)
+                return Response({
+                    'error': 'An error occurred while retrieving bookings'
+                }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
